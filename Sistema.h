@@ -7,7 +7,7 @@ using namespace std;
 
 class Sistema {
     private:
-        Hospital* hospital = new Hospital("");
+        Hospital* hospital = new Hospital("Marmaja");
         ListaPacientes* lista = new ListaPacientes();
 
     public:
@@ -16,4 +16,5 @@ class Sistema {
         string recorrerListaPacientes();
         string recorrerHospital();
         bool verificarSiExisteServicio(string nombre);
+        void repletarServicios(int cantidad);
 };

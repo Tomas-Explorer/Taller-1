@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "Sistema.h"
 #include "Hospital.h"
 #include "ListaPacientes.h"
@@ -45,7 +46,8 @@ void Sistema::crearServicio(string nombre) {
 }
 
 string Sistema::recorrerListaPacientes() {
-    string texto = "";
+    cout << endl;
+    string texto;
     
     if (lista->getPrimero() == nullptr) {
         texto += "La lista está vacía.";
@@ -54,12 +56,18 @@ string Sistema::recorrerListaPacientes() {
 
     NodoPaciente* actual = lista->getPrimero();
 
+    int contador = 1;
+
     while(actual->getSiguiente() != nullptr) {
-        texto += actual->getPaciente()->getNombre() + "\n";
+        Paciente* paciente = actual->getPaciente();
+
+        texto += to_string(contador) + ". " + paciente->getId() + " - " + paciente->getNombre() + "\n";
+        contador++;
         actual = actual->getSiguiente();
     }
 
     return texto;
+    cout << endl;
 }
 
 string Sistema::recorrerHospital() {
@@ -93,3 +101,32 @@ bool Sistema::verificarSiExisteServicio(string nombre) {
 
     return false;
 }  
+
+void Sistema::repletarServicios(int cantidad) {
+    if(lista->getPrimero() == nullptr || hospital->getPrimero() == nullptr) {return;}
+
+    NodoPaciente* pacienteActual = lista->getPrimero();
+    Servicio* servicioActual = hospital->getPrimero();
+
+    while(servicioActual != nullptr) {
+        if(pacienteActual->getPaciente()->getServicio() == servicioActual->getNombre()) {
+            ListaPacientes listaPacientes = servicioActual->getListaPacientes();
+
+            if(listaPacientes.getPrimero() == nullptr) {
+                listaPacientes.setPrimero(pacienteActual);
+                break;
+            } else {
+                NodoPaciente* actual = listaPacientes.getPrimero();
+                
+                while(actual->getSiguiente() != nullptr) {
+                    actual = actual->getSiguiente();
+                }
+
+                actual->setSiguiente(pacienteActual);
+            }
+            pacienteActual = pacienteActual->getSiguiente();
+        }
+        servicioActual = servicioActual->getSiguiente();
+    } 
+
+}

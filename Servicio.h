@@ -16,4 +16,5 @@ class Servicio {
         string getNombre() {return nombre;}
         Servicio* getSiguiente() {return siguiente;}
         void setSiguiente(Servicio* nuevo) {this->siguiente = nuevo;}
+        ListaPacientes getListaPacientes() {return lista;}
 };
