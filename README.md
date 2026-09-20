@@ -4,5 +4,5 @@
 - I.T.I
 
 > Comandos para compilar:
-  > g++ Sistema.cpp Main.cpp -o main
-  > ./main
+> - g++ Sistema.cpp Main.cpp -o main
+> - ./main
