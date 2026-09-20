@@ -33,6 +33,14 @@ void mostrarServicios() {
     cout << sistema->recorrerHospital() << endl;
 }
 
+void mostrarUltimoAtendido() {
+    Paciente* paciente = sistema->getUltimoAtendido();
+
+    cout << "Nombre: " << paciente->getNombre() << " | " <<
+     "Edad: " << paciente->getEdad() << " | " << "Departamento: " << 
+     paciente->getServicio() << endl;
+}
+
 int main() {
     leerArchivo();
     
@@ -62,10 +70,18 @@ int main() {
 
                 break;
             case 2:
+                mostrarServicios();
+
+                cout << "Seleccionar opción: " << endl;
+                int opc;
+
+                cin>>opc;
+                sistema->mostrarServicios(opc);
 
                 break;
             case 3:
-
+                cout << "HISTORIAL DE ÚLTIMA ATENCIÓN DEL HOSPITAL" << endl;
+                mostrarUltimoAtendido();
                 break;
             case 4:
                 break;

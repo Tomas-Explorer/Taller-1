@@ -9,6 +9,7 @@ class Sistema {
     private:
         Hospital* hospital = new Hospital("Marmaja");
         ListaPacientes* lista = new ListaPacientes();
+        Paciente* ultimoAtendido;
 
     public:
         void crearPaciente(string id, string nombre, int edad, string servicio);
@@ -17,4 +18,6 @@ class Sistema {
         string recorrerHospital();
         bool verificarSiExisteServicio(string nombre);
         void repletarServicios(int cantidad);
+        void mostrarServicios(int posicion);
+        Paciente* getUltimoAtendido() {return ultimoAtendido;}
 };

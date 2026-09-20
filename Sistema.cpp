@@ -10,6 +10,7 @@ void Sistema::crearPaciente(string id, string nombre, int edad, string servicio)
     Paciente* paciente = new Paciente(id, nombre, edad, servicio);
     NodoPaciente* nodoPaciente = new NodoPaciente(paciente);
 
+
     if(lista->getPrimero() == nullptr) {
         lista->setPrimero(nodoPaciente);
         return;
@@ -41,7 +42,7 @@ void Sistema::crearServicio(string nombre) {
     }
 
     actual->setSiguiente(servicio);
-   
+
     return;
 }
 
@@ -58,7 +59,7 @@ string Sistema::recorrerListaPacientes() {
 
     int contador = 1;
 
-    while(actual->getSiguiente() != nullptr) {
+    while(actual != nullptr) {
         Paciente* paciente = actual->getPaciente();
 
         texto += to_string(contador) + ". " + paciente->getId() + " - " + paciente->getNombre() + "\n";
@@ -71,17 +72,22 @@ string Sistema::recorrerListaPacientes() {
 }
 
 string Sistema::recorrerHospital() {
+    cout << endl;
     string texto = "";
 
+    
     if(hospital->getPrimero() == nullptr) {
         texto += "No hay servicios.";
         return texto;
     }
-
+    
+    int contador = 1;
+    
     Servicio* actual = hospital->getPrimero();
 
-    while(actual->getSiguiente() != nullptr) {
-        texto += actual->getNombre() + "\n";
+    while(actual != nullptr) {
+        texto += to_string(contador) + ". " + actual->getNombre() + "\n";
+        contador++;
         actual = actual->getSiguiente();
     }
 
@@ -93,10 +99,10 @@ bool Sistema::verificarSiExisteServicio(string nombre) {
 
     Servicio* actual = hospital->getPrimero();
 
-    while(actual->getSiguiente() != nullptr) {
+    while(actual != nullptr) {
         if(actual->getNombre() == nombre) {return true;}
 
-       actual = actual->getSiguiente();
+    actual = actual->getSiguiente();
     }
 
     return false;
@@ -106,18 +112,21 @@ void Sistema::repletarServicios(int cantidad) {
     if(lista->getPrimero() == nullptr || hospital->getPrimero() == nullptr) {return;}
 
     for(int i = 0; i < cantidad; i++) {
+        if(lista->getPrimero() == nullptr) {break;}
+        
         NodoPaciente* nodoActual = lista->getPrimero();
         Servicio* servicioActual = hospital->getPrimero();
         Paciente* pacienteActual = nodoActual->getPaciente();
 
-        while(servicioActual->getSiguiente() != nullptr) {
+        while(servicioActual != nullptr) {
             if (pacienteActual->getServicio() == servicioActual->getNombre()) {
                 ListaPacientes& listaPacientes = servicioActual->getListaPacientes();
+                NodoPaciente* siguiente = nodoActual->getSiguiente();
+                nodoActual->setSiguiente(nullptr);
 
                 if(listaPacientes.getPrimero() == nullptr) {
                     listaPacientes.setPrimero(nodoActual); 
-                    lista->setPrimero(nodoActual->getSiguiente());
-                    break;
+
                 } else {
                     NodoPaciente* actual = listaPacientes.getPrimero();
 
@@ -126,11 +135,36 @@ void Sistema::repletarServicios(int cantidad) {
                     }
 
                     actual->setSiguiente(nodoActual);
-                    lista->setPrimero(nodoActual->getSiguiente());
-                    break;
                 }
+
+                lista->setPrimero(siguiente);
+                break;
             }
             servicioActual = servicioActual->getSiguiente();
         }
+        ultimoAtendido = pacienteActual;
+    }
+}
+
+void Sistema::mostrarServicios(int posicion) {
+    if(hospital->getPrimero() == nullptr) {return;}
+    
+    Servicio* actual = hospital->getPrimero();
+    for(int i = 1; i < posicion; i++) {
+        actual = actual->getSiguiente();
+    }
+
+    ListaPacientes& listaP = actual->getListaPacientes();
+
+    cout << "=== ESTADO " << actual->getNombre() + " ===" << endl;
+    cout << "Pacientes en el departamento de " << actual->getNombre() + ":" << listaP.size() << endl;
+
+    NodoPaciente* nodoActual = listaP.getPrimero();
+
+    while(nodoActual != nullptr) {
+        Paciente* pacienteActual = nodoActual->getPaciente();
+
+        cout << pacienteActual->getNombre() + "(" << pacienteActual->getEdad() << ")" << endl;
+        nodoActual = nodoActual->getSiguiente();
     }
 }
