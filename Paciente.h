@@ -14,6 +14,7 @@ class Paciente {
             this->edad = edad;
             this->servicio = servicio;
         }
+        ~Paciente();
         string getId() {return id;}
         string getNombre() {return nombre;}
         int getEdad() {return edad;}

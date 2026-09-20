@@ -58,6 +58,8 @@ int main() {
                 int cantidad;
                 cin>>cantidad;
 
+                sistema->repletarServicios(cantidad);
+
                 break;
             case 2:
 

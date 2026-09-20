@@ -105,28 +105,32 @@ bool Sistema::verificarSiExisteServicio(string nombre) {
 void Sistema::repletarServicios(int cantidad) {
     if(lista->getPrimero() == nullptr || hospital->getPrimero() == nullptr) {return;}
 
-    NodoPaciente* pacienteActual = lista->getPrimero();
-    Servicio* servicioActual = hospital->getPrimero();
+    for(int i = 0; i < cantidad; i++) {
+        NodoPaciente* nodoActual = lista->getPrimero();
+        Servicio* servicioActual = hospital->getPrimero();
+        Paciente* pacienteActual = nodoActual->getPaciente();
 
-    while(servicioActual != nullptr) {
-        if(pacienteActual->getPaciente()->getServicio() == servicioActual->getNombre()) {
-            ListaPacientes listaPacientes = servicioActual->getListaPacientes();
+        while(servicioActual->getSiguiente() != nullptr) {
+            if (pacienteActual->getServicio() == servicioActual->getNombre()) {
+                ListaPacientes& listaPacientes = servicioActual->getListaPacientes();
 
-            if(listaPacientes.getPrimero() == nullptr) {
-                listaPacientes.setPrimero(pacienteActual);
-                break;
-            } else {
-                NodoPaciente* actual = listaPacientes.getPrimero();
-                
-                while(actual->getSiguiente() != nullptr) {
-                    actual = actual->getSiguiente();
+                if(listaPacientes.getPrimero() == nullptr) {
+                    listaPacientes.setPrimero(nodoActual); 
+                    lista->setPrimero(nodoActual->getSiguiente());
+                    break;
+                } else {
+                    NodoPaciente* actual = listaPacientes.getPrimero();
+
+                    while(actual->getSiguiente() != nullptr) {
+                        actual = actual->getSiguiente();
+                    }
+
+                    actual->setSiguiente(nodoActual);
+                    lista->setPrimero(nodoActual->getSiguiente());
+                    break;
                 }
-
-                actual->setSiguiente(pacienteActual);
             }
-            pacienteActual = pacienteActual->getSiguiente();
+            servicioActual = servicioActual->getSiguiente();
         }
-        servicioActual = servicioActual->getSiguiente();
-    } 
-
+    }
 }
